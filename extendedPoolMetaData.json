@@ -1,0 +1,25 @@
+{
+    "info": {
+      "url_png_icon_64x64": "https://adamantium.online/sun.png",
+      "url_png_logo": "https://adamantium.online/sun.png",
+      "location": "New Hampshire, USA",
+      "social": {
+        "twitter_handle": "OTG_WCat",
+        "telegram_handle": "WCat13",
+        "discord_handle": "WCat#6737",
+        "github_handle": "wcatz"
+      },
+      "about": {
+        "me": "https://armada-alliance.com/docs/",
+        "server": "Test server",
+        "company": "Company"
+      },
+      "my-pool-ids": {
+        "0": "ea86780865b8303939f21be043ec64003745baaee6f0a88c0e3ad545"
+      },
+      "when-satured-then-recommend": {
+        "0": "1fd1a22c53e08de6bae42053ce40d5c0f7e0b52b33eb728867505a36",
+        "1": "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"
+      }
+    }
+  }

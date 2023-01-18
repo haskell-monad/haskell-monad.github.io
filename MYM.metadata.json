@@ -1,0 +1,7 @@
+{
+  "name": "MYM",
+  "description": "This is the description of my Pool!",
+  "ticker": "MYM",
+  "homepage": "https://cardano-zh.com",
+  "extended": "https://cardano-zh.com/extendedPoolMetaData.json"
+}

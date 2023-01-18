@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="day-prompt" content="days ago"><meta name="hour-prompt" content="hours ago"><meta name="minute-prompt" content="minutes ago"><meta name="justnow-prompt" content="just now"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="Halogen-05-生命周期和订阅" /><meta name="author" content="purescript-halogen" /><meta property="og:locale" content="en" /><meta name="description" content="生命周期和订阅" /><meta property="og:description" content="生命周期和订阅" /><link rel="canonical" href="/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/" /><meta property="og:url" content="/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/" /><meta property="og:site_name" content="Lovelace" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-01-02T11:04:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Halogen-05-生命周期和订阅" /><meta name="google-site-verification" content="hYrEuDXdYFrLw9klfbDC2ltqWoXRXTNHWmgf9bgO838" /> <script type="application/ld+json"> {"author":{"@type":"Person","name":"purescript-halogen"},"headline":"Halogen-05-生命周期和订阅","dateModified":"2022-01-02T11:04:00+08:00","datePublished":"2022-01-02T11:04:00+08:00","description":"生命周期和订阅","url":"/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/"},"@context":"https://schema.org"}</script><title>Halogen-05-生命周期和订阅 | Lovelace</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Lovelace"><meta name="application-name" content="Lovelace"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?d0140067dd798ddd08fa1dfeecc191bb"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get MODE_ATTR() { return "data-mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } static get ID() { return "mode-toggle"; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } let self = this; /* always follow the system prefers */ this.sysDarkPrefers.addEventListener("change", () => { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.notify(); }); } /* constructor() */ get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode === ModeToggle.DARK_MODE; } get isLightMode() { return this.mode === ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer)) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } setDark() { $('html').attr(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_ATTR); sessionStorage.removeItem(ModeToggle.MODE_KEY); } /* Notify another plugins that the theme mode has changed */ notify() { window.postMessage({ direction: ModeToggle.ID, message: this.modeStatus }, "*"); } } /* ModeToggle */ const toggle = new ModeToggle(); function flipMode() { if (toggle.hasMode) { if (toggle.isSysDarkPrefer) { if (toggle.isLightMode) { toggle.clearMode(); } else { toggle.setLight(); } } else { if (toggle.isDarkMode) { toggle.clearMode(); } else { toggle.setDark(); } } } else { if (toggle.isSysDarkPrefer) { toggle.setLight(); } else { toggle.setDark(); } } toggle.notify(); } /* flipMode() */ </script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end" lang="en"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar/avatar.png" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Lovelace</a></div><div class="site-subtitle font-italic">所有的善恶都是我，良心一路走来依旧清澈鲜活...</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <button class="mode-toggle btn" aria-label="Switch Mode"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/haskell-monad" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['haskell.lisp','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>Halogen-05-生命周期和订阅</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Halogen-05-生命周期和订阅</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/purescript-halogen/purescript-halogen/blob/master/docs/guide/04-Lifecycles-Subscriptions.md">purescript-halogen</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" date="2022-01-02T11:04:00+08:00" data-toggle="tooltip" data-placement="bottom" title="Sun, Jan 2, 2022, 11:04 AM +0800" >Jan 2, 2022</em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="3816 words"> <em>21 min</em> read</span></div></div></div><div class="post-content"><h3 id="生命周期和订阅">生命周期和订阅 <a href="#生命周期和订阅" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><p>到目前为止，您学到的概念涵盖了您将编写的大多数<code class="language-plaintext highlighter-rouge">Halogen</code>组件。大多数组件都有内部状态，呈现<code class="language-plaintext highlighter-rouge">HTML</code>元素，并通过在用户单击、悬停或以其他方式与呈现的<code class="language-plaintext highlighter-rouge">HTML</code>交互时执行操作来做出响应。</p><p>但是<code class="language-plaintext highlighter-rouge">actions</code>也可以从其他类型的事件内部产生。下面是一些常见的例子:</p><ul><li>您需要在组件启动时运行一个<code class="language-plaintext highlighter-rouge">action</code>(例如，您需要执行一个<code class="language-plaintext highlighter-rouge">effect</code>来获得您的初始状态)或者当组件从<code class="language-plaintext highlighter-rouge">DOM</code>中移除时(例如，清理您获得的资源)。这些被称为生命周期事件。<li>您需要定期运行<code class="language-plaintext highlighter-rouge">action</code>(例如，您需要每<code class="language-plaintext highlighter-rouge">10</code>秒执行一次更新),或者当一个事件发生在你渲染的<code class="language-plaintext highlighter-rouge">HTML</code>之外时(例如，你需要在<code class="language-plaintext highlighter-rouge">DOM</code>窗口上按下一个键时运行一个<code class="language-plaintext highlighter-rouge">action</code>, 或者您需要处理在第三方组件(如文本编辑器)中发生的事件)。这些由订阅处理。</ul><p>当我们在下一章学习父组件和子组件时，我们将学习在组件中产生<code class="language-plaintext highlighter-rouge">action</code>的另一种方式。本章将重点介绍生命周期和订阅。</p><h4 id="生命周期事件">生命周期事件 <a href="#生命周期事件" class="anchor"><i class="fas fa-hashtag"></i></a></h4></h4><p>每个<code class="language-plaintext highlighter-rouge">Halogen</code>组件都可以访问两个生命周期事件:</p><ul><li>组件可以在初始化时评估一个<code class="language-plaintext highlighter-rouge">action</code>(<code class="language-plaintext highlighter-rouge">Halogen</code>创建它)<li>组件可以在完成时评估一个<code class="language-plaintext highlighter-rouge">action</code>(<code class="language-plaintext highlighter-rouge">Halogen</code>删除它)</ul><p>我们指定当组件作为<code class="language-plaintext highlighter-rouge">eval</code>函数的一部分进行初始化和最终确定时要运行的<code class="language-plaintext highlighter-rouge">action</code>(如果有的话)，这与我们提供<code class="language-plaintext highlighter-rouge">handleAction</code>函数的位置相同。在下一节中，我们将更详细地了解<code class="language-plaintext highlighter-rouge">eval</code>是什么，但首先让我们看一个正在运行的生命周期示例。</p><p>下面的示例与我们的随机数组件几乎相同，但有一些重要的变化:</p><ul><li>除了现有的<code class="language-plaintext highlighter-rouge">Regenerate</code>操作之外，我们还添加了<code class="language-plaintext highlighter-rouge">Initialize</code>和<code class="language-plaintext highlighter-rouge">Finalize</code>。<li>我们已经扩展了我们的<code class="language-plaintext highlighter-rouge">eval</code>以包含一个<code class="language-plaintext highlighter-rouge">initialize</code>字段，该字段声明应在组件初始化时评估我们的<code class="language-plaintext highlighter-rouge">Initialize</code>操作，以及一个<code class="language-plaintext highlighter-rouge">finalize</code>字段, 该声明应在组件完成时评估我们的<code class="language-plaintext highlighter-rouge">Finalize</code>操作的。<li>由于我们有两个新<code class="language-plaintext highlighter-rouge">action</code>，因此我们在<code class="language-plaintext highlighter-rouge">handleAction</code>函数中添加了两个新<code class="language-plaintext highlighter-rouge">case</code>来描述如何处理它们。</ul><p>尝试通读示例:</p><pre><code class="language-purescript">module Main where
+
+import Prelude
+
+import Data.Maybe (Maybe(..), maybe)
+import Effect (Effect)
+import Effect.Class (class MonadEffect)
+import Effect.Class.Console (log)
+import Effect.Random (random)
+import Halogen as H
+import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
+import Halogen.VDom.Driver (runUI)
+
+main :: Effect Unit
+main = HA.runHalogenAff do
+  body &lt;- HA.awaitBody
+  runUI component unit body
+
+type State = Maybe Number
+
+data Action
+  = Initialize
+  | Regenerate
+  | Finalize
+
+component :: forall query input output m. MonadEffect m =&gt; H.Component query input output m
+component =
+  H.mkComponent
+    { initialState
+    , render
+    , eval: H.mkEval $ H.defaultEval
+        { handleAction = handleAction
+        , initialize = Just Initialize
+        , finalize = Just Finalize
+        }
+    }
+
+initialState :: forall input. input -&gt; State
+initialState _ = Nothing
+
+render :: forall m. State -&gt; H.ComponentHTML Action () m
+render state = do
+  let value = maybe "No number generated yet" show state
+  HH.div_
+    [ HH.h1_
+        [ HH.text "Random number" ]
+    , HH.p_
+        [ HH.text ("Current value: " &lt;&gt; value) ]
+    , HH.button
+        [ HE.onClick \_ -&gt; Regenerate ]
+        [ HH.text "Generate new number" ]
+    ]
+
+handleAction :: forall output m. MonadEffect m =&gt; Action -&gt; H.HalogenM State Action () output m Unit
+handleAction = case _ of
+  Initialize -&gt; do
+    handleAction Regenerate
+    newNumber &lt;- H.get
+    log ("Initialized: " &lt;&gt; show newNumber)
+
+  Regenerate -&gt; do
+    newNumber &lt;- H.liftEffect random
+    H.put (Just newNumber)
+
+  Finalize -&gt; do
+    number &lt;- H.get
+    log ("Finalized! Last number was: " &lt;&gt; show number)
+</code></pre><p>当这个组件挂载时，我们将生成一个随机数并将其记录到控制台。当用户单击按钮时，我们将不断重新生成随机数，当这个组件从<code class="language-plaintext highlighter-rouge">DOM</code>中移除时，它会记录它在状态中的最后一个数字。</p><p>我们在这个例子中做了另一个有趣的改变: 在我们的<code class="language-plaintext highlighter-rouge">Initialize</code>处理程序中，我们调用了<code class="language-plaintext highlighter-rouge">handleAction Regenerate</code> – 我们递归地调用了<code class="language-plaintext highlighter-rouge">handleAction</code>. 正如我们在这里所做的那样，不时从其他<code class="language-plaintext highlighter-rouge">actions</code>中调用<code class="language-plaintext highlighter-rouge">actions</code>会很方便。我们也可以内联<code class="language-plaintext highlighter-rouge">Regenerate</code>的处理程序 —— 下面的代码做同样的事情:</p><pre><code class="language-purescript">Initialize -&gt; do
+    newNumber &lt;- H.liftEffect random
+    H.put (Just newNumber)
+    log ("Initialized: " &lt;&gt; show newNumber)
+</code></pre><p>在我们转向订阅之前，让我们先谈谈<code class="language-plaintext highlighter-rouge">eval</code>函数。</p><h4 id="eval函数mkeval和evalspec">eval函数，mkEval和EvalSpec <a href="#eval函数mkeval和evalspec" class="anchor"><i class="fas fa-hashtag"></i></a></h4></h4><p>我们一直在我们所有的组件中使用<code class="language-plaintext highlighter-rouge">eval</code>，但到目前为止我们只通过<code class="language-plaintext highlighter-rouge">handleAction</code>函数处理了由我们的<code class="language-plaintext highlighter-rouge">Halogen HTML</code>产生的<code class="language-plaintext highlighter-rouge">action</code>。 但是<code class="language-plaintext highlighter-rouge">eval</code>函数可以描述我们的组件可以评估<code class="language-plaintext highlighter-rouge">HalogenM</code>代码以响应事件的所有方式。</p><p>在绝大多数情况下，您不需要太关心下面描述的组件规范和评估规范中涉及的所有类型和函数，但我们将简要分解这些类型，以便您了解发生了什么。</p><p><code class="language-plaintext highlighter-rouge">mkComponent</code>函数接受一个<code class="language-plaintext highlighter-rouge">ComponentSpec</code>，它是一个包含三个字段的记录:</p><pre><code class="language-purescript">H.mkComponent
+  { initialState :: input -&gt; state
+  , render :: state -&gt; H.ComponentHTML action slots m
+  , eval :: H.HalogenQ query action input ~&gt; H.HalogenM state action slots output m
+  }
+</code></pre><p>我们已经在<code class="language-plaintext highlighter-rouge">initialState</code>和<code class="language-plaintext highlighter-rouge">render</code>函数上花费了大量时间。但是<code class="language-plaintext highlighter-rouge">eval</code>函数可能看起来很奇怪 —— 什么是<code class="language-plaintext highlighter-rouge">HalogenQ</code>，<code class="language-plaintext highlighter-rouge">handleAction</code>之类的函数是如何适应的？现在，我们将重点介绍此函数的最常见用法，但您可以在概念参考中找到完整的详细信息。</p><p><code class="language-plaintext highlighter-rouge">eval</code>函数描述了如何处理组件中出现的事件。它通常是通过将<code class="language-plaintext highlighter-rouge">mkEval</code>函数应用于<code class="language-plaintext highlighter-rouge">EvalSpec</code>来构建的，与我们将<code class="language-plaintext highlighter-rouge">mkComponent</code>应用于<code class="language-plaintext highlighter-rouge">ComponentSpec</code>以生成<code class="language-plaintext highlighter-rouge">Component</code>的方式相同。</p><p>为方便起见, <code class="language-plaintext highlighter-rouge">Halogen</code>提供了一个名为<code class="language-plaintext highlighter-rouge">defaultEval</code>的已经完成的<code class="language-plaintext highlighter-rouge">EvalSpec</code>，它在组件中出现事件时不执行任何操作。通过使用这个默认值，你可以只覆盖你关心的值，而其余的值可以什么都不做。</p><p>以下是我们如何定义目前仅处理<code class="language-plaintext highlighter-rouge">action</code>的<code class="language-plaintext highlighter-rouge">eval</code>函数:</p><pre><code class="language-purescript">H.mkComponent
+  { initialState
+  , render
+  , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
+  }
+
+-- 假设我们已经在范围内定义了一个`handleAction`函数...
+handleAction = ...
+</code></pre><p>注意：<code class="language-plaintext highlighter-rouge">initialState</code>和<code class="language-plaintext highlighter-rouge">render</code>使用缩写<code class="language-plaintext highlighter-rouge">record</code>双关符号设置; 但是，在这种情况下，<code class="language-plaintext highlighter-rouge">handleAction</code>不能设置为双关语，因为它是<code class="language-plaintext highlighter-rouge">Records</code>更新的一部分, <a href="https://github.com/purescript/documentation/blob/master/language/Records.md#record-update">Records语言参考</a>中提供了有关<code class="language-plaintext highlighter-rouge">record</code>双关语和<code class="language-plaintext highlighter-rouge">record</code>更新语法的更多信息。</p><p>如果需要，您可以覆盖更多字段。例如，如果您需要支持初始化程序，那么您也将覆盖<code class="language-plaintext highlighter-rouge">initialize</code>字段:</p><pre><code class="language-purescript">H.mkComponent
+  { initialState
+  , render
+  , eval: H.mkEval $ H.defaultEval
+      { handleAction = handleAction
+      , initialize = Just Initialize
+      }
+  }
+</code></pre><p>让我们快速浏览一下<code class="language-plaintext highlighter-rouge">EvalSpec</code>的完整类型:</p><pre><code class="language-purescript">type EvalSpec state query action slots input output m =
+  { handleAction :: action -&gt; HalogenM state action slots output m Unit
+  , handleQuery :: forall a. query a -&gt; HalogenM state action slots output m (Maybe a)
+  , initialize :: Maybe action
+  , receive :: input -&gt; Maybe action
+  , finalize :: Maybe action
+  }
+</code></pre><p><code class="language-plaintext highlighter-rouge">EvalSpec</code>涵盖了组件内部可用的所有类型。幸运的是，您无需在任何地方指定此类型 —— 您只需向<code class="language-plaintext highlighter-rouge">mkEval</code>提供一条<code class="language-plaintext highlighter-rouge">record</code>即可. 我们将在下一章介绍<code class="language-plaintext highlighter-rouge">handleQuery</code>和<code class="language-plaintext highlighter-rouge">receive</code>函数以及<code class="language-plaintext highlighter-rouge">query</code>和<code class="language-plaintext highlighter-rouge">output</code>类型，因为它们只与子组件相关。</p><p>由于在正常使用中，您将覆盖<code class="language-plaintext highlighter-rouge">defaultEval</code>中的特定字段，而不是自己写出整个<code class="language-plaintext highlighter-rouge">eval</code>规范，让我们也看看<code class="language-plaintext highlighter-rouge">defaultEval</code>为这些函数中的每一个实现了什么:</p><pre><code class="language-purescript">defaultEval =
+  { handleAction: const (pure unit)
+  , handleQuery: const (pure Nothing) -- 我们将在介绍子组件时了解这一点
+  , receive: const Nothing -- 我们将在介绍子组件时了解这一点
+  , finalize: Nothing
+  }
+</code></pre><p>现在，让我们转到内部事件的另一个常见来源: 订阅。</p><h5 id="订阅">订阅 <a href="#订阅" class="anchor"><i class="fas fa-hashtag"></i></a></h5></h5><p>有时您需要处理内部出现的事件，这些事件不是来自与您呈现的<code class="language-plaintext highlighter-rouge">Halogen HTML</code>交互的用户。两个常见的来源是基于时间的<code class="language-plaintext highlighter-rouge">actions</code>和事件，它们发生在您渲染的元素之外(如浏览器窗口)。</p><p>在<code class="language-plaintext highlighter-rouge">Halogen</code>中，可以使用<a href="https://github.com/purescript-halogen/purescript-halogen-subscriptions">halogen-subscriptions</a>库手动创建这些类型的事件。<code class="language-plaintext highlighter-rouge">Halogen</code>组件可以通过提供应该在发射器触发时运行的<code class="language-plaintext highlighter-rouge">action</code>来订阅 <code class="language-plaintext highlighter-rouge">Emitter</code>。</p><p>您可以使用<code class="language-plaintext highlighter-rouge">halogen-subscriptions</code>库中的函数订阅事件，但<code class="language-plaintext highlighter-rouge">Halogen</code>提供了一个特殊的帮助函数，用于订阅<code class="language-plaintext highlighter-rouge">DOM</code>中称为<code class="language-plaintext highlighter-rouge">eventListener</code>的事件侦听器。</p><p>一个<code class="language-plaintext highlighter-rouge">Emitter</code>产生一个<code class="language-plaintext highlighter-rouge">action</code>流，只要它保持订阅<code class="language-plaintext highlighter-rouge">emitter</code>，你的组件就会评估这些<code class="language-plaintext highlighter-rouge">action</code>。创建一个<code class="language-plaintext highlighter-rouge">emitter</code>并在组件初始化时订阅它是很常见的，尽管您可以随时订阅或取消订阅一个<code class="language-plaintext highlighter-rouge">emitter</code>。</p><p>让我们看一下订阅的两个示例: 一个基于<code class="language-plaintext highlighter-rouge">Aff</code>的计时器，它计算自组件<code class="language-plaintext highlighter-rouge">mounted</code>以来的秒数，以及一个基于事件侦听器的流，它报告文档上的键盘事件。</p><h6 id="实现一个timer">实现一个Timer</h6><p>我们的第一个示例将使用基于<code class="language-plaintext highlighter-rouge">Aff</code>的计时器来每秒递增。</p><pre><code class="language-purescript">module Main where
+
+import Prelude
+
+import Control.Monad.Rec.Class (forever)
+import Data.Maybe (Maybe(..))
+import Effect (Effect)
+import Effect.Aff (Milliseconds(..))
+import Effect.Aff as Aff
+import Effect.Aff.Class (class MonadAff)
+import Effect.Exception (error)
+import Halogen as H
+import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.Subscription as HS
+import Halogen.VDom.Driver (runUI)
+
+main :: Effect Unit
+main = HA.runHalogenAff do
+  body &lt;- HA.awaitBody
+  runUI component unit body
+
+data Action = Initialize | Tick
+
+type State = Int
+
+component :: forall query input output m. MonadAff m =&gt; H.Component query input output m
+component =
+  H.mkComponent
+    { initialState
+    , render
+    , eval: H.mkEval $ H.defaultEval
+        { handleAction = handleAction
+        , initialize = Just Initialize
+        }
+    }
+
+initialState :: forall input. input -&gt; State
+initialState _ = 0
+
+render :: forall m. State -&gt; H.ComponentHTML Action () m
+render seconds = HH.text ("You have been here for " &lt;&gt; show seconds &lt;&gt; " seconds")
+
+handleAction :: forall output m. MonadAff m =&gt; Action -&gt; H.HalogenM State Action () output m Unit
+handleAction = case _ of
+  Initialize -&gt; do
+    _ &lt;- H.subscribe =&lt;&lt; timer Tick
+    pure unit
+
+  Tick -&gt;
+    H.modify_ \state -&gt; state + 1
+
+timer :: forall m a. MonadAff m =&gt; a -&gt; m (HS.Emitter a)
+timer val = do
+  { emitter, listener } &lt;- H.liftEffect HS.create
+  _ &lt;- H.liftAff $ Aff.forkAff $ forever do
+    Aff.delay $ Milliseconds 1000.0
+    H.liftEffect $ HS.notify listener val
+  pure emitter
+</code></pre><p>几乎所有这些代码都应该看起来很熟悉，但有两个新部分:</p><p>首先，我们定义了一个可重用的<code class="language-plaintext highlighter-rouge">Emitter</code>，它将每秒广播一个我们选择的值，直到它没有订阅者:</p><pre><code class="language-purescript">timer :: forall m a. MonadAff m =&gt; a -&gt; m (HS.Emitter a)
+timer val = do
+  { emitter, listener } &lt;- H.liftEffect HS.create
+  _ &lt;- H.liftAff $ Aff.forkAff $ forever do
+    Aff.delay $ Milliseconds 1000.0
+    H.liftEffect $ HS.notify listener val
+  pure emitter
+</code></pre><p>除非您正在创建与<code class="language-plaintext highlighter-rouge">DOM</code>中的事件侦听器相关联的<code class="language-plaintext highlighter-rouge">emitters</code>，否则您应该使用<code class="language-plaintext highlighter-rouge">halal-subscriptions</code>库中的函数。大多数情况下，您将使用<code class="language-plaintext highlighter-rouge">HS.create</code>创建一个<code class="language-plaintext highlighter-rouge">emitter</code>和一个<code class="language-plaintext highlighter-rouge">listener</code>，但如果您需要手动控制取消订阅，您也可以使用<code class="language-plaintext highlighter-rouge">HS.makeEmitter</code>。</p><p>其次，我们使用<code class="language-plaintext highlighter-rouge">Halogen</code>的<code class="language-plaintext highlighter-rouge">subscribe</code>函数附加到<code class="language-plaintext highlighter-rouge">emitter</code>，同时提供我们想要每秒发射的特定<code class="language-plaintext highlighter-rouge">action</code>:</p><pre><code class="language-purescript">Initialize -&gt; do
+    _ &lt;- H.subscribe =&lt;&lt; timer Tick
+    pure unit
+</code></pre><p><code class="language-plaintext highlighter-rouge">subscribe</code>函数将一个<code class="language-plaintext highlighter-rouge">Emitter</code>作为参数，并返回一个<code class="language-plaintext highlighter-rouge">SubscriptionId</code>。您可以随时将此<code class="language-plaintext highlighter-rouge">SubscriptionId</code>传递给<code class="language-plaintext highlighter-rouge">Halogen</code>取消订阅功能以结束订阅. 组件在完成时会自动结束其拥有的任何订阅，因此无需在此处取消订阅。</p><p>您可能还对<a href="https://github.com/purescript-halogen/purescript-halogen/tree/master/examples/ace">Ace编辑器示例</a>感兴趣，该示例订阅在第三方<code class="language-plaintext highlighter-rouge">JavaScript</code>组件中发生的事件，并使用它们来触发<code class="language-plaintext highlighter-rouge">Halogen</code>组件中的<code class="language-plaintext highlighter-rouge">action</code>。</p><h6 id="使用事件监听器作为订阅">使用事件监听器作为订阅</h6><p>使用订阅的另一个常见原因是当您需要对<code class="language-plaintext highlighter-rouge">DOM</code>中的事件做出反应时，这些事件不是直接由您控制的<code class="language-plaintext highlighter-rouge">HTML</code>元素产生的。例如，我们可能想要监听发生在<code class="language-plaintext highlighter-rouge">document</code>本身上的事件。</p><p>在以下示例中，我们订阅<code class="language-plaintext highlighter-rouge">document</code>上的按键事件，保存按住<code class="language-plaintext highlighter-rouge">Shift</code>键时输入的任何字符，并在用户按下<code class="language-plaintext highlighter-rouge">Enter</code>键时停止监听。它演示了使用<code class="language-plaintext highlighter-rouge">eventListener</code>函数附加事件侦听器并使用<code class="language-plaintext highlighter-rouge">H.unsubscribe</code>函数选择何时清理它。</p><p>在<code class="language-plaintext highlighter-rouge">examples</code>目录下也有对应的<a href="https://github.com/purescript-halogen/purescript-halogen/tree/master/examples/keyboard-input">键盘输入的例子</a>。</p><pre><code class="language-purescript">module Main where
+
+import Prelude
+
+import Data.Maybe (Maybe(..))
+import Data.String as String
+import Effect (Effect)
+import Effect.Aff.Class (class MonadAff)
+import Halogen as H
+import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.Query.Event (eventListener)
+import Halogen.VDom.Driver (runUI)
+import Web.Event.Event as E
+import Web.HTML (window)
+import Web.HTML.HTMLDocument as HTMLDocument
+import Web.HTML.Window (document)
+import Web.UIEvent.KeyboardEvent as KE
+import Web.UIEvent.KeyboardEvent.EventTypes as KET
+
+main :: Effect Unit
+main = HA.runHalogenAff do
+  body &lt;- HA.awaitBody
+  runUI component unit body
+
+type State = { chars :: String }
+
+data Action
+  = Initialize
+  | HandleKey H.SubscriptionId KE.KeyboardEvent
+
+component :: forall query input output m. MonadAff m =&gt; H.Component query input output m
+component =
+  H.mkComponent
+    { initialState
+    , render
+    , eval: H.mkEval $ H.defaultEval
+        { handleAction = handleAction
+        , initialize = Just Initialize
+        }
+    }
+
+initialState :: forall input. input -&gt; State
+initialState _ = { chars: "" }
+
+render :: forall m. State -&gt; H.ComponentHTML Action () m
+render state =
+  HH.div_
+    [ HH.p_ [ HH.text "Hold down the shift key and type some characters!" ]
+    , HH.p_ [ HH.text "Press ENTER or RETURN to clear and remove the event listener." ]
+    , HH.p_ [ HH.text state.chars ]
+    ]
+
+handleAction :: forall output m. MonadAff m =&gt; Action -&gt; H.HalogenM State Action () output m Unit
+handleAction = case _ of
+  Initialize -&gt; do
+    document &lt;- H.liftEffect $ document =&lt;&lt; window
+    H.subscribe' \sid -&gt;
+      eventListener
+        KET.keyup
+        (HTMLDocument.toEventTarget document)
+        (map (HandleKey sid) &lt;&lt;&lt; KE.fromEvent)
+
+  HandleKey sid ev
+    | KE.shiftKey ev -&gt; do
+        H.liftEffect $ E.preventDefault $ KE.toEvent ev
+        let char = KE.key ev
+        when (String.length char == 1) do
+          H.modify_ \st -&gt; st { chars = st.chars &lt;&gt; char }
+
+    | KE.key ev == "Enter" -&gt; do
+        H.liftEffect $ E.preventDefault (KE.toEvent ev)
+        H.modify_ _ { chars = "" }
+        H.unsubscribe sid
+
+    | otherwise -&gt;
+        pure unit
+</code></pre><p>在这个例子中，我们使用了<code class="language-plaintext highlighter-rouge">H.subscribe'</code>函数，它将<code class="language-plaintext highlighter-rouge">SubscriptionId</code>传递给<code class="language-plaintext highlighter-rouge">emitter</code>而不是返回它。这是一种替代方法，可以让您将<code class="language-plaintext highlighter-rouge">ID</code>保留在<code class="language-plaintext highlighter-rouge">action</code>类型而不是<code class="language-plaintext highlighter-rouge">state</code>中，这样会更方便。</p><p>我们将<code class="language-plaintext highlighter-rouge">emitter</code>直接写入我们的代码中以处理<code class="language-plaintext highlighter-rouge">Initialize</code>操作，该操作在<code class="language-plaintext highlighter-rouge">document</code>上注册一个事件侦听器并在每次按下键时发出<code class="language-plaintext highlighter-rouge">HandleKey</code>。</p><p><code class="language-plaintext highlighter-rouge">eventListener</code>使用<code class="language-plaintext highlighter-rouge">purescript-web</code>库中的类型来处理<code class="language-plaintext highlighter-rouge">DOM</code>以手动构建事件侦听器:</p><pre><code class="language-purescript">eventListener
+  :: forall a
+   . Web.Event.EventType
+  -&gt; Web.Event.EventTarget.EventTarget
+  -&gt; (Web.Event.Event -&gt; Maybe a)
+  -&gt; HS.Emitter a
+</code></pre><p>它需要一种要监听的事件类型(在我们的例子中:<code class="language-plaintext highlighter-rouge">keyup</code>)，一个指示在哪里监听事件的目标(在我们的例子中: <code class="language-plaintext highlighter-rouge">HTMLDocument</code>本身)，以及一个将发生的事件转换为应该发出的类型的回调函数(在我们的例子中: 我们通过在<code class="language-plaintext highlighter-rouge">HandleKey</code>构造函数中捕获事件来发出我们的<code class="language-plaintext highlighter-rouge">Action</code>类型).</p><h5 id="wrapping-up">Wrapping Up <a href="#wrapping-up" class="anchor"><i class="fas fa-hashtag"></i></a></h5></h5><p><code class="language-plaintext highlighter-rouge">Halogen</code>组件使用<code class="language-plaintext highlighter-rouge">Action</code>类型来处理组件内部出现的各种事件。我们现在已经看到了这种情况可能发生的所有常见方式:</p><ul><li>用户与我们呈现的<code class="language-plaintext highlighter-rouge">HTML</code>元素的交互<li>生命周期事件<li>订阅，无论是通过<code class="language-plaintext highlighter-rouge">Aff</code>和<code class="language-plaintext highlighter-rouge">Effect</code>函数还是来自<code class="language-plaintext highlighter-rouge">DOM</code>上的事件侦听器</ul><p>您现在已经了解了单独使用<code class="language-plaintext highlighter-rouge">Halogen</code>组件的所有基本知识。在下一章中，我们将学习如何将<code class="language-plaintext highlighter-rouge">Halogen</code>组件组合成父组件和子组件的树。</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/%E5%89%8D%E7%AB%AF-purescript-halogen/'>前端 purescript halogen</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/%E5%89%8D%E7%AB%AF-purescript-halogen/" class="post-tag no-text-decoration" >前端 purescript halogen</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Halogen-05-生命周期和订阅 - Lovelace&amp;url=/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Halogen-05-生命周期和订阅 - Lovelace&amp;u=/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=/posts/Halogen-05-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E8%AE%A2%E9%98%85/&amp;text=Halogen-05-生命周期和订阅 - Lovelace" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/%E5%89%8D%E7%AB%AF-purescript-halogen/">前端 purescript halogen</a> <a class="post-tag" href="/tags/eutxo%E6%A8%A1%E5%9E%8B/">eUTxO模型</a> <a class="post-tag" href="/tags/utxo%E6%A8%A1%E5%9E%8B/">UTxO模型</a> <a class="post-tag" href="/tags/%E5%88%86%E7%B1%BB%E8%B4%A6/">分类账</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Halogen-01-%E6%8C%87%E5%8D%97/"><div class="card-body"> <em class="timeago small" date="2022-01-02T11:04:00+08:00" >Jan 2, 2022</em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Halogen-01-指南</h3><div class="text-muted small"><p> Halogen指南 Halogen是一个声明式的、基于组件的用于PureScript的UI库，它强调类型安全。在本指南中，您将学习在Halogen中编写实际应用程序所需的核心思想和模式。 这是一个微型Halogen应用程序，可让您递增和递减计数器: module Main where import Prelude import Effect (Effect) import Halo...</p></div></div></a></div><div class="card"> <a href="/posts/Halogen-02-%E6%B8%B2%E6%9F%93HalogenHTML/"><div class="card-body"> <em class="timeago small" date="2022-01-02T11:04:00+08:00" >Jan 2, 2022</em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Halogen-02-渲染HalogenHTML</h3><div class="text-muted small"><p> 渲染Halogen HTML Halogen HTML元素是Halogen应用程序的最小构建块。这些元素描述了您希望在屏幕上看到的内容。 Halogen HTML元素不是组件（我们将在下一章中介绍组件），如果没有组件，元素就无法呈现。但是，编写生成Halogen HTML的辅助函数然后在组件中使用这些函数是很常见的。 在本章中，我们将探索在没有组件或事件的情况下编写HTML。 Halo...</p></div></div></a></div><div class="card"> <a href="/posts/Halogen-03-%E7%BB%84%E4%BB%B6/"><div class="card-body"> <em class="timeago small" date="2022-01-02T11:04:00+08:00" >Jan 2, 2022</em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Halogen-03-组件</h3><div class="text-muted small"><p> 组件介绍 Halogen HTML是Halogen应用程序的基本构建块之一。但是，生成HTML的纯函数缺少实际应用程序所需的许多基本功能: 表示随时间变化的值的状态、对网络请求等事物的effects以及响应DOM事件的能力(例如，当用户单击按钮时). Halogen组件接受input并生成Halogen HTML, 就像我们目前看到的函数一样。然而, 与函数不同的是，组件维护内部状态，可...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Halogen-04-%E6%89%A7%E8%A1%8CEffects/" class="btn btn-outline-primary" prompt="Older"><p>Halogen-04-执行Effects</p></a> <a href="/posts/Halogen-06-%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6/" class="btn btn-outline-primary" prompt="Newer"><p>Halogen-06-父子组件</p></a></div><script src="https://utteranc.es/client.js" repo="haskell-monad/haskell-monad.github.io" issue-term="title" crossorigin="anonymous" async> </script> <script type="text/javascript"> $(function() { const origin = "https://utteranc.es"; const iframe = "iframe.utterances-frame"; const lightTheme = "github-light"; const darkTheme = "github-dark"; let initTheme = lightTheme; if ($("html[data-mode=dark]").length > 0 || ($("html[data-mode]").length == 0 && window.matchMedia("(prefers-color-scheme: dark)").matches)) { initTheme = darkTheme; } addEventListener("message", (event) => { let theme; /* credit to <https://github.com/utterance/utterances/issues/170#issuecomment-594036347> */ if (event.origin === origin) { /* page initial */ theme = initTheme; } else if (event.source === window && event.data && event.data.direction === ModeToggle.ID) { /* global theme mode changed */ const mode = event.data.message; theme = (mode === ModeToggle.DARK_MODE ? darkTheme : lightTheme); } else { return; } const message = { type: "set-theme", theme: theme }; const utterances = document.querySelector(iframe).contentWindow; utterances.postMessage(message, origin); }); }); </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2023 <a href="https://github.com/haskell-monad">luna</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/%E5%89%8D%E7%AB%AF-purescript-halogen/">前端 purescript halogen</a> <a class="post-tag" href="/tags/eutxo%E6%A8%A1%E5%9E%8B/">eUTxO模型</a> <a class="post-tag" href="/tags/utxo%E6%A8%A1%E5%9E%8B/">UTxO模型</a> <a class="post-tag" href="/tags/%E5%88%86%E7%B1%BB%E8%B4%A6/">分类账</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-YJYEMD99ZB"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-YJYEMD99ZB'); }); </script>
